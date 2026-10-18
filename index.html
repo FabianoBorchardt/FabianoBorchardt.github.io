@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Fabiano Borchardt — infraestrutura, redes, firewall e cibersegurança ofensiva. Labs práticos com pfSense e Red Team.">
+<title>Fabiano Borchardt — Cybersecurity Portfolio</title>
+<style>
+:root{--bg:#050a12;--card:#0b1422;--line:#16263d;--text:#d7e2f0;--mute:#7d90a8;--acc:#00e5a0;--acc2:#2f9bff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f4f7fb;--card:#fff;--line:#d5deea;--text:#14202f;--mute:#566a82;--acc:#00916a;--acc2:#1768c4}}
+:root[data-theme="dark"]{--bg:#050a12;--card:#0b1422;--line:#16263d;--text:#d7e2f0;--mute:#7d90a8;--acc:#00e5a0;--acc2:#2f9bff}
+html{scroll-behavior:smooth;scroll-padding-top:70px;color-scheme:dark light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;line-height:1.6}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(600px 300px at 80% -5%,color-mix(in srgb,var(--acc) 14%,transparent),transparent),linear-gradient(var(--line) 1px,transparent 1px) 0 0/100% 48px;opacity:.35;z-index:0}
+a{color:inherit;text-decoration:none}
+#rain{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.17}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:6;background:repeating-linear-gradient(transparent 0 2px,rgba(0,0,0,.09) 3px)}
+.tag::before{content:"$ ";color:var(--mute)}
+h2::before{content:"# ";color:var(--acc)}
+h1{text-shadow:0 0 18px color-mix(in srgb,var(--acc) 35%,transparent);animation:g 6s infinite}
+@keyframes g{0%,92%,100%{text-shadow:0 0 18px color-mix(in srgb,var(--acc) 35%,transparent)}94%{text-shadow:3px 0 #ff2a6d,-3px 0 var(--acc2)}97%{text-shadow:-3px 0 #ff2a6d,3px 0 var(--acc2)}}
+.term{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:12.5px;max-width:520px;box-shadow:0 0 24px color-mix(in srgb,var(--acc) 14%,transparent)}
+.term::before{content:"● ● ●";display:block;font-size:9px;letter-spacing:4px;color:var(--mute);margin-bottom:8px}
+.term .p{color:var(--acc)}.term .o{color:var(--mute);min-height:1.6em}
+.card::before{content:"";display:block;height:2px;margin:-18px -18px 14px;background:linear-gradient(90deg,var(--acc),transparent);opacity:.7;border-radius:10px 10px 0 0}
+.card.plus::before{display:none}
+nav{position:sticky;top:0;z-index:5;display:flex;gap:18px;overflow-x:auto;padding:14px 20px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);font-size:12px;white-space:nowrap}
+nav a{color:var(--mute)}nav a:hover{color:var(--acc)}
+main{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 20px}
+section{padding:72px 0 24px}
+.tag{font-size:11px;letter-spacing:.18em;color:var(--acc)}
+.hero{min-height:88vh;display:flex;flex-direction:column;justify-content:center;gap:16px;padding-top:40px}
+.avatar{width:120px;height:120px;border-radius:50%;border:2px solid var(--acc);object-fit:cover;box-shadow:0 0 30px color-mix(in srgb,var(--acc) 30%,transparent)}
+h1{margin:0;font-size:clamp(30px,8.5vw,64px);line-height:1.04;letter-spacing:-.02em;overflow-wrap:anywhere}
+h1 i{color:var(--acc);font-style:normal;animation:b 1s steps(2) infinite}
+@keyframes b{50%{opacity:0}}
+.role{color:var(--acc2);letter-spacing:.1em;font-size:13px}
+.lead{max-width:600px;color:var(--mute)}
+.links{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-block;border:1px solid var(--line);padding:9px 14px;border-radius:6px;font-size:12px;background:var(--card);transition:.2s}
+.btn:hover{border-color:var(--acc);color:var(--acc)}
+.focus{border-left:2px solid var(--acc);padding-left:12px;font-size:12px;color:var(--mute)}
+.focus b{display:block;color:var(--text);letter-spacing:.06em}
+h2{margin:6px 0 10px;font-size:clamp(24px,5vw,36px)}
+.sub{color:var(--mute);margin:0 0 26px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;transition:.2s}
+.card:hover{border-color:var(--acc);transform:translateY(-3px)}
+.num{color:var(--acc);font-size:12px}
+.card h3{margin:6px 0 8px;font-size:15px;letter-spacing:.05em}
+.card ul{margin:0;padding-left:16px;color:var(--mute);font-size:13px}
+.card p{margin:6px 0 12px;color:var(--mute);font-size:13px}
+.meta{display:flex;justify-content:space-between;font-size:11px;color:var(--mute)}
+.st{color:var(--acc)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chips span{font-size:10px;border:1px solid var(--line);padding:2px 8px;border-radius:99px;color:var(--acc2)}
+.zones{list-style:none!important;padding:0!important}
+.zones li{margin:3px 0}
+.d{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
+.g{background:#22c55e}.y{background:#eab308}.r{background:#ef4444}
+code{font-size:11px;color:var(--acc);background:color-mix(in srgb,var(--acc) 10%,transparent);padding:1px 5px;border-radius:4px}
+.plus{display:grid;place-items:center;font-size:34px;color:var(--mute);border-style:dashed;min-height:120px}
+.job{border-left:2px solid var(--line);padding:2px 0 18px 16px;margin-left:4px}
+.job b{display:block}.job span{font-size:12px;color:var(--mute)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+footer{position:relative;z-index:1;text-align:center;padding:50px 20px 40px;color:var(--mute);font-size:11px;border-top:1px solid var(--line);margin-top:60px}
+</style>
+</head>
+<body>
+<canvas id="rain"></canvas>
+<nav>
+<a href="#sobre">01 / Sobre</a><a href="#skills">02 / Skills</a><a href="#labs">03 / Labs</a><a href="#exp">04 / Experiência</a><a href="#contato">05 / Contato</a>
+</nav>
+<main>
+<section id="sobre" class="hero">
+<div class="tag">PORTFÓLIO DE CIBERSEGURANÇA · CARAZINHO / RS</div>
+<img class="avatar" src="data:image/jpeg;base64,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" alt="Foto de perfil de Fabiano Borchardt">
+<div class="term"><div><span class="p">fabiano@lab:~$</span> whoami</div><div class="o" id="t1"></div><div><span class="p">fabiano@lab:~$</span> cat status.txt</div><div class="o" id="t2"></div></div>
+<h1>FABIANO BORCHARDT<i>_</i></h1>
+<div class="role">CIBERSEGURANÇA EM FORMAÇÃO // ANALISTA DE INFRAESTRUTURA</div>
+<p class="lead">5 anos em Infraestrutura de TI e Redes, quase 4 deles no setor industrial. Agora direciono essa bagagem para Cyber Security e Segurança Ofensiva, usando meu conhecimento de como a infraestrutura é construída para encontrar vulnerabilidades e tornar a segurança mais proativa.</p>
+<div class="links">
+<a class="btn" href="https://lnkd.in/p/d_hMBdQs">LinkedIn ↗</a>
+</div>
+<div class="focus">BUSCANDO OPORTUNIDADES<b>ANALISTA DE SEGURANÇA JR · PENTESTER JR · SOC N1</b></div>
+</section>
+
+<section id="skills">
+<div class="tag">[ BASE TÉCNICA ]</div>
+<h2>Meus conhecimentos atuais</h2>
+<p class="sub">Da infraestrutura à segurança ofensiva.</p>
+<div class="grid">
+<div class="card"><span class="num">01</span><h3>REDES &amp; PROTOCOLOS</h3><ul><li>TCP/IP e roteamento</li><li>DNS e DHCP</li><li>Análise de pacotes</li></ul></div>
+<div class="card"><span class="num">02</span><h3>SEGURANÇA DE PERÍMETRO</h3><ul><li>Firewalls (pfSense)</li><li>Arquitetura de VPNs seguras</li><li>Segmentação de redes</li></ul></div>
+<div class="card"><span class="num">03</span><h3>SISTEMAS &amp; AMBIENTES</h3><ul><li>Troubleshooting avançado</li><li>Administração de ativos de rede</li><li>Mitigação de incidentes</li></ul></div>
+<div class="card"><span class="num">04</span><h3>ESTUDANDO AGORA</h3><ul><li>Ferramentas Linux</li><li>OWASP Top 10</li><li>TryHackMe / HackTheBox</li></ul></div>
+</div>
+</section>
+
+<section id="labs">
+<div class="tag">[ APRENDER · CONSTRUIR · DOCUMENTAR ]</div>
+<h2>Laboratórios &amp; projetos</h2>
+<p class="sub">Cada lab é montado em ambiente isolado e documentado como relatório técnico.</p>
+<div class="grid">
+
+<div class="card"><div class="meta"><span>LAB / 001</span><span class="st">● PUBLICADO</span></div>
+<h3>REDES — VOL. 1 // pfSense</h3>
+<p>Ambiente básico com pfSense: WAN, LAN, regras de firewall, aliases e validação de tráfego em uma única rede.</p>
+<div class="chips"><span>PFSENSE</span><span>FIREWALL</span><span>NAT</span><span>ALIASES</span></div>
+<a class="btn" href="https://lnkd.in/p/d_hMBdQs">VER NO LINKEDIN ↗</a></div>
+
+<div class="card"><div class="meta"><span>LAB / 002</span><span class="st">● PUBLICADO</span></div>
+<h3>REDES — VOL. 2 // SEGMENTAÇÃO</h3>
+<p>Rede segmentada em três zonas isoladas, simulando um ambiente corporativo real:</p>
+<ul class="zones"><li><span class="d g"></span>Corporativa: usuários, só internet</li><li><span class="d y"></span>Servidores: isolados dos clientes</li><li><span class="d r"></span>Gerência: acesso a todos os segmentos</li></ul>
+<p>4 interfaces (WAN + 3), DHCP por segmento, aliases, regras com menor privilégio e testes de isolamento. Em produção, o mesmo desenho seria feito com VLANs.</p>
+<div class="chips"><span>PFSENSE</span><span>SEGMENTAÇÃO</span><span>VIRTUALBOX</span><span>NETWORK SECURITY</span></div>
+<a class="btn" href="https://lnkd.in/p/d_hMBdQs">VER NO LINKEDIN ↗</a></div>
+
+<div class="card"><div class="meta"><span>LAB / 003</span><span class="st">● PUBLICADO</span></div>
+<h3>CYBER // RED TEAM</h3>
+<p>Home lab com Kali Linux + Metasploitable 2 em rede host-only isolada. Explorei o backdoor do <code>vsftpd 2.3.4</code>: reconhecimento com Nmap, identificação do serviço FTP, exploração com Metasploit e acesso root remoto.</p>
+<p>Todo o processo foi documentado em um write-up técnico de 6 páginas, incluindo o erro (<code>LHOST</code> vs <code>LHOSTS</code>) e como o corrigi.</p>
+<div class="chips"><span>KALI</span><span>NMAP</span><span>METASPLOIT</span><span>PENTEST</span></div>
+<a class="btn" href="https://lnkd.in/p/d_hMBdQs">LER WRITE-UP ↗</a></div>
+
+<div class="card plus">＋</div>
+</div>
+</section>
+
+<section id="exp">
+<div class="tag">[ TRAJETÓRIA ]</div>
+<h2>Experiência</h2>
+<div class="job"><b>Analista de Infraestrutura — Connectos Tecnologia da Informação</b><span>Atual</span></div>
+<div class="job"><b>Infraestrutura de TI — Stara S/A</b><span>Quase 4 anos · setor industrial</span></div>
+</section>
+
+<section id="contato">
+<div class="tag">[ FALE COMIGO ]</div>
+<h2>Vamos conversar?</h2>
+<p class="sub">Aberto a vagas de Analista de Segurança Júnior, Pentester Júnior e Analista de SOC N1.</p>
+<div class="cta"><a class="btn" href="https://lnkd.in/p/d_hMBdQs">LINKEDIN ↗</a></div>
+</section>
+</main>
+<footer>FABIANO BORCHARDT // CYBERSECURITY · FEITO COM CURIOSIDADE · © 2026</footer>
+<script>
+(function(){
+var rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function type(id,s,cb){var e=document.getElementById(id);if(rm){e.textContent=s;if(cb)cb();return}var i=0;(function n(){e.textContent=s.slice(0,++i);if(i<s.length)setTimeout(n,28);else if(cb)cb()})()}
+type('t1','analista_de_infra -> pentester_em_formacao',function(){type('t2','[ok] nmap  metasploit  pfsense  owasp  | status: ONLINE')});
+if(rm)return;
+var c=document.getElementById('rain'),x=c.getContext('2d'),w,h,drops;
+function size(){w=c.width=innerWidth;h=c.height=innerHeight;drops=[];for(var i=0;i<Math.floor(w/16);i++)drops.push(Math.random()*h/16)}
+size();addEventListener('resize',size);
+var ch='01ABCDEF{}<>/$#';
+setInterval(function(){var st=getComputedStyle(document.documentElement),bg=st.getPropertyValue('--bg').trim(),ac=st.getPropertyValue('--acc').trim();
+x.fillStyle=bg+'22';x.fillRect(0,0,w,h);x.fillStyle=ac;x.font='14px monospace';
+for(var i=0;i<drops.length;i++){var y=drops[i]*16;x.fillText(ch[Math.random()*ch.length|0],i*16,y);drops[i]=(y>h&&Math.random()>.975)?0:drops[i]+1}
+},60);
+})();
+</script>
+</body>
+</html>
